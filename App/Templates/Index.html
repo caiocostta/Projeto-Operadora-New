@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="../Static/CSS/Style.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    </head>
+    <body>
+        {% if alertError %}
+        <div class="modal modal-error d-flex flex-wrap" tabindex="-1">
+            <div class="modal-dialog">
+                
+                <div class="modal-content">
+                    <div class="modal-header justify-content-center">
+                        <h5 class="flex-grow-1 text-center">Erro</h5>
+                        <a href="/">
+                            <button type="button" class="btn-close"  tooltip="Fechar" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                        </a>
+                    </div>
+                    <div class="modal-body text-center">
+                        Não é possível registrar duas operadoras com o mesmo nome
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <div style="height: 100vh; margin: 0;" class="container-fluid">    
+            <div style="padding: 0px 30px;" class="container-fluid bg-white">
+                <!-- Barra de Pesquisa -->
+                <div class="container-fluid rounded mt-2">
+                <div style="margin-bottom: 0 !important;" class="d-flex align-items-center p-3 my-3 bg-white text-red">
+                    <div class="d-flex align-items-center flex-grow-1">
+                    <i class="fa-solid fa-phone-volume text-white"></i>
+                    <div class="lh-1">
+                        <a style="text-decoration: none;" href="/"><h2 class="text-secondary">Operadoras</h2></a>
+                    </div>
+                    </div>
+                    <div style="height: 40px;" class="d-flex">
+                    <div class="d-flex align-items-center" role="search">
+                        <span class="input-search-icon"></span>
+                        <form class="d-flex align-items-center" action="/search" method="POST">
+                            <input autocomplete="off" id="search" name="search" class="form-control m-5" type="search" placeholder="Procurar" aria-label="Procurar">
+                            <button style="height: 100%; margin-left: -35px; margin-right: 25px;" type="submit" class="btn btn-outline-danger">
+                                Pesquisa
+                            </button>
+                        </form>
+                        
+                    </div>
+
+                    <!-- FUNÇÕES DO MODAL ADICIONAR -->
+
+                    <script>
+                        function modalAddOn(){
+                            document.getElementsByClassName('modal-add')[0].style.display = 'block'
+                        }
+
+                        function modalAddOff(){
+                            document.getElementsByClassName('modal-add')[0].style.display = 'none'
+                            document.getElementById('form').reset()
+                        }
+                    </script>
+
+                    <button id="btnAdd" onclick="modalAddOn()" class="btn btn-danger d-flex align-items-center">
+                        <i class="bi bi-plus-circle"></i>
+                        <p class="m-auto ml-2 d-none d-sm-block">Adicionar</p>
+                    </button>
+                    </div>
+                </div>
+                
+                <!-- LISTA DE OPERADORAS -->
+                <div class="container-fluid table-responsive p-0 rounded">
+                    <table class="table align-middle text-start table-hover shadow-sm bg-white">
+                        <thead class="text-white">
+                            <tr>
+                                <th>Nome</th>
+                                <th>Telefone</th>
+                                <th>Celular</th>
+                                <th class="d-none d-sm-table-cell">Expediente</th>
+                                <th class="d-none d-sm-table-cell">
+                                    Observações
+                                    <script>
+                                        var obsOn = false;
+                                        function handleShowMore(){
+                                            obsOn = !obsOn;
+                                            var dashes = document.querySelectorAll('.dash')
+                                            var notes = document.querySelectorAll('.notes')
+                                            if(obsOn == true){
+                                                document.getElementById('eye').classList.add('d-none')
+                                                document.getElementById('eye-slash').classList.remove('d-none')
+
+
+                                                for(note of notes){
+                                                    note.classList.remove('d-none')
+                                                }
+                                                for(dash of dashes){
+                                                    dash.classList.add('d-none')
+                                                }
+                                            }else{
+                                                document.getElementById('eye').classList.remove('d-none')
+                                                document.getElementById('eye-slash').classList.add('d-none')
+
+                                                for(note of notes){
+                                                    note.classList.add('d-none')
+                                                }
+                                                for(dash of dashes){
+                                                    dash.classList.remove('d-none')
+                                                }
+                                            }
+                                        }
+                                    </script>
+                                    <button style="border-color: #E00000;" type="button" class="btn text-white tn-sm" tooltip="Ver Mais">
+                                    <div class="d-flex align-items-center"><i onclick="handleShowMore()" id="eye" class="fa fa-eye" ></i></div>
+                                    <div class="d-flex align-items-center"><i onclick="handleShowMore()" id="eye-slash" class="d-none fa fa-eye-slash"></i></div>
+                                    </button>
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <!-- TABELA DE INFORMAÇÕES DA OPERADORA -->
+                        <tbody>
+                            {% if operatorSearch == Null %}
+                            {% for operator in allOperators %}
+                            <tr class="operator-info">
+                                <td class="name-operator">
+                                    <p class="m-auto"> {{operator[1]}} </p>
+                                </td>
+                                <td>
+                                    {% for contact in allContacts %}
+                                        {% if contact[1] == operator[0] %}
+                                            <p class="m-auto">
+                                                {% if contact[2][0:2] != '08' %}
+                                                    ({{ contact[2][0:2] }}) {{contact[2][2:6]}}-{{contact[2][6:10]}}
+                                                {% endif %}
+                                                {% if contact[2][0:2] == '08' %}
+                                                    {{ contact[2][0:4] }} {{contact[2][4:7]}} {{contact[2][7:11]}}
+                                                {% endif %}
+                                            </p>
+                                        {% endif %}
+                                    {% endfor %}
+                                </td>
+                                <td>
+                                    {% for contact in allContacts %}
+                                        {% if contact[1] == operator[0] %}
+                                            {% if contact[3] != '' %}
+                                                {% if contact[3][0:2] != '08' %}
+                                                    <p class="m-auto">
+                                                        ({{ contact[3][0:2] }}) {{contact[3][2:3]}} {{contact[3][3:7]}}-{{contact[3][7:]}}
+                                                    </p>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </td>
+                                <td><p class="m-auto"> {{operator[2]}} </p></td>
+                                <td class="max-w text-break d-sm-table-cell" >
+                                    <p class="notes d-none m-auto">{{operator[3]}}</p>
+                                    <div class="dash m-auto"></div>
+                                </td>
+                                <td>
+                                    <a style="color: #000; text-decoration: none;" href="{{ url_for('putOperator', operatorID=operator[0]) }}">
+                                        <button type="button" class="btn btn-outline-dark btn-sm ml-2" tooltip="Editar">
+                                            <i class="fa-regular fa-pen-to-square"></i>
+                                        </button>
+                                    </a>
+                                    
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            {% endif %}
+                            {% if operatorSearch != Null %}
+                                {% if contactSearch != '' %}
+                                    {% for operatorS in operatorSearch %}
+                                    <tr>
+                                        <td><p class="m-auto">{{operatorS['OperatorName']}}</p></td>
+                                        <td>
+                                            {% for contactS in contactSearch %}
+                                            <p class="m-auto">
+                                                {% if contactS[2][0:2] != '08' %}
+                                                    ({{ contactS[2][0:2] }}) {{contactS[2][2:6]}}-{{contactS[2][6:10]}}
+                                                {% endif %}
+                                                {% if contactS[2][0:2] == '08' %}
+                                                    {{ contactS[2][0:4] }} {{contactS[2][4:7]}} {{contactS[2][7:11]}}
+                                                {% endif %}
+                                            </p>
+                                            {% endfor %}
+                                        </td>
+                                        <td>
+                                            {% for contactS in contactSearch %}
+                                            <p class="m-auto">
+                                                ({{ contactS[3][0:2] }}) {{contactS[3][2:3]}} {{contactS[3][3:7]}}-{{contactS[3][7:]}}
+                                            </p>
+                                            {% endfor %}
+                                        </td>
+                                        <td>{{operatorS['businessHour']}}</td>
+                                        <td class="max-w text-break d-sm-table-cell">
+                                            <p class="notes d-none m-auto">{{operatorS['notes']}}</p>
+                                            <div class="dash m-auto"></div>
+                                        </td>
+                                        <td>
+                                            <a style="color: #000; text-decoration: none;" href="{{ url_for('putOperator', operatorID=operatorS['OperatorID']) }}">
+                                                <button type="button" class="btn btn-outline-dark btn-sm ml-2" tooltip="Editar">
+                                                    <i class="fa-regular fa-pen-to-square"></i>
+                                                </button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endif %}
+                        </tbody>
+                        {% if contactSearch == '' %}
+                        <tfoot>
+                            <tr>
+                            <td colspan="8" class="text text-center">
+                                <div style="height: 60vh;" class="d-flex flex-column justify-content-center">
+                                <i style="font-size: 70px; color: #bbb;" class="fa-solid fa-magnifying-glass"></i>
+                                <h4 style="color: #bbb;">Nenhuma operadora encontrada!</h4>
+                                </div>
+                            </td>
+                            </tr>
+                        </tfoot>
+                        {% endif %}
+                    </table>
+                </div>
+                </div>
+            </div>
+        </div>
+        {% extends 'Modal.html' %}
+    </body>
+</html>

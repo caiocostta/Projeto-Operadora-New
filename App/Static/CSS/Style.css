@@ -1,0 +1,136 @@
+
+@import "../CSS/font-awesome/css/all.min.css";
+
+.bg-white{
+    background-color: #fff !important;
+  }
+  textarea:focus, input:focus, button:focus {
+    box-shadow: 0 0 0 0 !important;
+    outline: 0 !important;
+  }
+  .text-white{
+    background-color: #E00000;
+  }
+  .text-danger{
+    color: #E00000 !important;
+  }
+  .btn-danger{
+    background-color: #E00000 !important;
+  }
+  
+  #search{
+    border: 1px solid #ccc !important;
+    height: 100%;
+    border-radius: 3px;
+  }
+  #search:focus{
+    border: 1px solid #aaa !important;
+  }
+  
+  #search{
+    padding-left: 35px;
+  }
+  .input-search-icon{
+    background-image: url(https://admin.mandic.com.br/Images/icon-search.png);
+    width: 28px;
+    height: 28px;
+    position: absolute;
+    z-index: 9;
+    background-repeat: no-repeat;
+    background-position: 6px 6px;
+    padding: 12px;
+    margin-left: 50px;
+    margin-bottom: 8px;
+  }
+  
+  .fa-phone-volume{
+    padding: 10px;
+    border-radius: 35px;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 20px;
+  }
+  
+  .b-on{
+    border: 1px solid #bbb !important;
+  }
+  .b-on.is-invalid{
+    border: 1px solid #E00000 !important;
+    color: #E00000;
+  }
+  .form-control{
+    border: none;
+    border-radius: 0;
+    border-bottom: 2px solid #bbb;
+  }
+  input.is-invalid{
+    border-bottom: 2px solid #E00000;
+  }
+  
+  
+  .mr-2{
+    margin-right: 10px !important;
+  }
+  .ml-2{
+    margin-left: 10px !important;
+  }
+  
+  .btn-outline-danger{
+    border-color: #E00000;
+    color: #E00000;
+  }
+  .btn-outline-danger:hover{
+    background-color: #E00000;
+    border-color: #E00000;
+    color: #fff;
+  }
+  
+  .modal{
+    animation-name: backgroundColor;
+    animation-duration: 0.5s;
+    background-color: rgba(0, 0, 0, 0.7);
+    --bs-modal-margin: 0.5rem !important;
+  }
+  .modal-dialog{
+    min-width: 50vw;
+  }
+  .modal-content{
+    top: 25vh;
+    position: initial !important;
+  }
+  .modal-header{
+    border: none;
+  }
+  .modal-footer{
+    border: none;
+  }
+  .modal-footer .btn{
+    border-radius: 0;
+  }
+  
+  .card{
+    box-shadow: 0px 0px 3px 2px rgba(0, 0, 0, 0.3);
+    border: none;
+  }
+  .card-header{
+    box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.7);
+    border: none;
+  }
+  
+  .dash{
+    height: 10px;
+    width: 80%;
+    margin-top: 10px;
+    border-radius: 5px;
+    background-color: #ccc;
+  }
+  
+  .max-w{
+    max-width: 200px;
+  }
+  
+  @keyframes backgroundColor {
+    from {background-color: rgba(0, 0, 0, 0.3);}
+    to {background-color: none !important;}
+  }
+  

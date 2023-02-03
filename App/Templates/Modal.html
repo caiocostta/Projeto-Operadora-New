@@ -1,0 +1,236 @@
+<!-- MODAL ADICIONAR OPERADORA -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
+
+<div class="container-fluid">
+    <div class="modal modal-add flex-wrap">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Adicionar Operadora</h5>
+            <button type="button" class="btn-close" tooltip="Fechar" onclick="modalAddOff()" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+            <form action="/" method="POST" id="form" class="d-flex flex-column">
+                <div style="width: 100%" class="d-flex flex-column align-items-start align-items-sm-center flex-wrap flex-sm-nowrap">
+                    <div style="width: 100%" class="d-flex flex-column flex-grow-1 align-items-start mb-3 ml-2">
+                        <label for="opNome" class="form-label text-secondary mr-2">Nome <span class="text-danger">*</span> </label>
+                        <input name="name" autocomplete="off" style="width: 100%;" type="text" class="form-control" id="opNome">
+                        <div class="invalid-feedback">
+                            O nome é Obrigatório
+                        </div>
+                    </div>
+                    <div style="width: 100%;" class="text-start">
+                        <h4>Contatos</h4>
+                    </div>
+                    <div style="width: 100%;" class="d-flex">
+                        <div style="width: 100%;" class="d-flex flex-column">
+                            <label style="width: 100%" class="form-label text-start text-secondary mt-2">Telefone Principal <span class="text-danger">*</span></label>
+                            
+                            <div class="d-flex flex-column flex-grow-1 align-items-start mb-3">
+                                <div>
+                                    <input name="telphone" autocomplete="off" type="text" class="form-control" placeholder="Telefone Fixo" id="telphone">
+                                    <script>
+                                        $('#telphone').mask('(00) 0000-00000')
+                                    </script>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div style="width: 100%;" class="d-flex flex-column">
+                            <label style="width: 100%" class="form-label text-start text-secondary mt-2">Celular</label>
+                            
+                            <div class="d-flex flex-column flex-grow-1 align-items-start mb-3">
+                                <div>
+                                    <input name="celphone" autocomplete="off" type="text" class="form-control" placeholder="Celular" id="celphone">
+                                    <script>
+                                        $('#celphone').mask('(00) 0 0000-0000')
+                                    </script>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                <div style="width: 100%;" class="text-start">
+                    <h4>Observações</h4>
+                </div>
+                <label for="opObs" style="width: 100%;" class="form-label text-start text-secondary mr-2">Observações ou o passo-a-passo do contato com a operadora (opcional)</label>
+                <textarea name="notes" class="b-on rounded form-control" placeholder="Digite uma observação" id="opObs"></textarea>
+                <div style="width: 100%;" class="text-start">
+                    <h4>Expediente</h4>
+                </div>
+                <label for="opObs" style="width: 100%;" class="form-label text-start text-secondary mr-2">Horario de funcionamento (opcional)</label>
+                <textarea name="businessHour" class="b-on rounded form-control" placeholder="Digite o horário de funcionamento da operadora" id="opObs"></textarea>
+                <div class="invalid-feedback">
+                    O número Máximo de caracteres foi excedido, siga o padrão: <br/>De: Seg a Sex <br/> Das: 12:00 às 18:00)
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="modalAddOff()" class="btn btn-light text-secondary" tooltip="Fechar">
+                    Cancelar
+                    </button>
+                    <script>
+                        function formatTel(){
+                            $('#telphone').unmask()
+                            $('#celphone').unmask()
+                        }
+                    </script>
+                    <input type="submit" onclick="formatTel()" value="Salvar" class="btn btn-danger" tooltip="Salvar"/>                    
+                </div>
+            </form>
+        </div>
+        
+        </div>
+    </div>
+    </div>
+</div>
+{% if modalOn == True %}
+    <!-- MODAL EDITAR OPERADORA -->
+    <div class="container-fluid">
+        <div class="modal d-flex flex-wrap" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Editar</h5>
+                        <a href="/">
+                            <button type="button" class="btn-close"  tooltip="Fechar" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/edit/{{ operatorEdit['OperatorID'] }}" method="POST" class="d-flex flex-column">
+                            <div style="width: 100%" class="d-flex flex-column align-items-start align-items-sm-center flex-wrap flex-sm-nowrap">
+                                <div style="width: 100%" class="d-flex flex-column flex-grow-1 align-items-start mb-3">
+                                <label for="opNome" class="form-label text-secondary mr-2">Nome <span class="text-danger">*</span> </label>
+                                <input name="nameEdit" autocomplete="off" style="width: 200px;" type="text" class="form-control rounded form-disable" value="{{operatorEdit['OperatorName']}}" id="opNome">
+                                <div style="width: 200px;" class="invalid-feedback">
+                                    O nome é Obrigatório
+                                </div>
+                                </div>
+                                <div style="width: 100%;" class="text-start">
+                                    <h5>Contatos</h5>
+                                </div>
+                                <div style="width: 100%;" class="d-flex">
+                                    <div style="width: 100%;" class="d-flex flex-column">
+                                        <label style="width: 100%" class="form-label text-start text-secondary mt-2">Telefones</label>
+                                        {% for contact in contactEdit %}
+                                        <div class="d-flex flex-column flex-grow-1 align-items-start mb-3">
+                                            <div>
+                                                <input name="telphoneEdit" autocomplete="off" type="text" class="form-control" value="{{ contact[2] }}" placeholder="(__) _____-____" id="telphoneEdit">
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div style="width: 100%;" class="d-flex flex-column">
+                                        <label style="width: 100%" class="form-label text-start text-secondary mt-2">Celulares</label>
+                                        {% for contact in contactEdit %}
+                                        <div class="d-flex flex-column flex-grow-1 align-items-start mb-3">
+                                            <div>
+                                                <input name="celphoneEdit" autocomplete="off" type="text" class="form-control" value="{{ contact[3] }}" placeholder="(__) _____-____" id="celphoneEdit">
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div style="width: 100%;" class="d-flex">
+                                    <div style="width: 100%; display: none;" id="telNew" class="flex-column mr-2">
+                                        <label style="width: 100%" class="form-label text-start text-secondary mt-2">Novo Telefone</label>
+                                        
+                                        <div class="d-flex flex-column flex-grow-1 align-items-start mb-3">
+                                            <div>
+                                                <input name="telphoneNew" autocomplete="off" type="text" class="form-control" placeholder="Telefone Fixo" id="telphoneNew">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="width: 100%; display: none;" id="celNew" class="flex-column">
+                                        <label style="width: 100%" class="form-label text-start text-secondary mt-2">Novo Celular</label>
+                                        
+                                        <div class="d-flex flex-column flex-grow-1 align-items-start mb-3">
+                                            <div>
+                                                <input name="celphoneNew" autocomplete="off" type="text" class="form-control" placeholder="Celular" id="celphoneNew">
+                                            </div>
+                                        </div>  
+                                    </div>
+                                </div>
+                                
+                                <script>
+                                    function newContactOn(){
+                                        document.querySelector('#telNew').style.display = 'flex'
+                                        document.querySelector('#celNew').style.display = 'flex'
+                                        document.querySelector('#contactBtn').style.display = 'none'
+                                    }
+                                </script>
+
+                                <a id="contactBtn" onclick="newContactOn()" style="border: none;" class="btn">
+                                    <i class="fa-solid fa-circle-plus"></i>
+                                </a>
+                                
+                            </div>
+                            <div style="width: 100%;" class="text-start">
+                                <h5>Observações</h5>
+                            </div>
+                            <label for="opObs" style="width: 100%;" class="form-label text-start text-secondary mr-2">Observações ou o passo-a-passo do contato com a operadora (opcional)</label>
+                            <textarea name="notes" class="b-on rounded form-control" placeholder="Digite uma observação" id="opObs">{{ operatorEdit['notes'] }}</textarea>
+                            <div style="width: 100%;" class="text-start">
+                                <h5>Expediente</h5>
+                            </div>
+                            <label for="opObs" style="width: 100%;" class="form-label text-start text-secondary mr-2">Horario de funcionamento (opcional)</label>
+                            <textarea name="businessHour" class="b-on rounded form-control" placeholder="Digite o horário de funcionamento da operadora" id="opObs">{{ operatorEdit['businessHour'] }}</textarea>
+                            <div class="invalid-feedback">
+                                O número Máximo de caracteres foi excedido, siga o padrão: <br/>De: Seg a Sex <br/> Das: 12:00 às 18:00)
+                            </div>
+                            <div class="modal-footer container-fluid">
+                                <script>
+                                    function modalConfirmOn(){
+                                        console.log(document.getElementsByClassName('modalConfirm'))
+                                        document.querySelector('.modalConfirm').style.display = 'flex'
+                                    }
+                                </script>
+                                <button type="button" onclick="modalConfirmOn()" class="btn btn-light text-secondary" tooltip="Excluir Operadora" data-bs-dismiss="modal">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                    Excluir operadora
+                                </button>
+                                <div class="flex-grow-1 d-flex justify-content-end">
+                                    <a href="/">
+                                        <button type="button" class="btn btn-light text-secondary" tooltip="Fechar" data-bs-dismiss="modal">
+                                            Cancelar
+                                        </button>
+                                    </a>
+                                    <button onclick="formatTel()" type="submit" class="btn btn-danger" tooltip="Salvar">
+                                        Salvar
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- MODAL CONFIRMAÇÃO DE EXCLUSÃO -->
+    <div class="container-fluid">
+        <div class="modal modalConfirm align-items-center flex-wrap" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h5 style="width: 100%;" class="modal-title">Confirmar Exclusão</h5>
+                </div>
+                <div class="modal-body text-center">
+                    <p>Deseja excluir a operadora?</p>
+                    <p>Esta ação não poderá ser revertida</p>
+                    <a style="text-decoration: none;" href="/">
+                        <button class="btn btn-outline-danger mr-2">
+                            Não
+                        </button>
+                    </a>
+                    <a style="text-decoration: none;" href="{{ url_for('removeOperator', operatorID=operatorEdit['OperatorID']) }}">
+                        <button class="btn btn-danger ml-2">
+                            Sim
+                        </button>
+                    </a>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
