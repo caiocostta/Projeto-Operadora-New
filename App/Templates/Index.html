@@ -186,11 +186,15 @@
                                             {% endfor %}
                                         </td>
                                         <td>
+                                            
                                             {% for contactS in contactSearch %}
-                                            <p class="m-auto">
-                                                ({{ contactS[3][0:2] }}) {{contactS[3][2:3]}} {{contactS[3][3:7]}}-{{contactS[3][7:]}}
-                                            </p>
+                                                {% if contactS[3] != '' %}
+                                                    <p class="m-auto">
+                                                        ({{ contactS[3][0:2] }}) {{contactS[3][2:3]}} {{contactS[3][3:7]}}-{{contactS[3][7:]}}
+                                                    </p>
+                                                {% endif %}
                                             {% endfor %}
+                                                
                                         </td>
                                         <td>{{operatorS['businessHour']}}</td>
                                         <td class="max-w text-break d-sm-table-cell">
